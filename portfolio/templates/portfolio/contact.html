@@ -1,0 +1,251 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Contact - {{ profile.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<!-- Contact Hero -->
+<section class="contact-hero">
+    <div class="hero-background">
+        <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="page-title">
+                Let's <span class="gradient-text">Connect</span>
+            </h1>
+            <p class="page-subtitle">
+                Ready to bring your ideas to life? Let's discuss your next project
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Content -->
+<section class="contact-content section">
+    <div class="container">
+        <div class="contact-grid">
+            <!-- Contact Information -->
+            <div class="contact-info" data-aos="fade-right">
+                <div class="info-header">
+                    <h2 class="info-title">Get In Touch</h2>
+                    <p class="info-description">
+                        I'm always interested in new opportunities and exciting projects. 
+                        Whether you have a question or just want to say hi, I'll get back to you!
+                    </p>
+                </div>
+                
+                <div class="contact-methods">
+                    {% if profile %}
+                        <!-- Email -->
+                        <div class="contact-method" data-aos="fade-up" data-aos-delay="100">
+                            <div class="method-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="method-details">
+                                <h3 class="method-title">Email</h3>
+                                <p class="method-text">{{ profile.email }}</p>
+                                <a href="mailto:{{ profile.email }}" class="method-link">
+                                    Send Email <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% if profile.phone %}
+                        <!-- Phone -->
+                        <div class="contact-method" data-aos="fade-up" data-aos-delay="200">
+                            <div class="method-icon"><i class="fas fa-phone"></i></div>
+                            <div class="method-details">
+                                <h3 class="method-title">Phone</h3>
+                                <p class="method-text">{{ profile.phone }}</p>
+                                <a href="tel:{{ profile.phone }}" class="method-link">
+                                    Call Now <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if profile.location %}
+                        <!-- Location -->
+                        <div class="contact-method" data-aos="fade-up" data-aos-delay="300">
+                            <div class="method-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="method-details">
+                                <h3 class="method-title">Location</h3>
+                                <p class="method-text">{{ profile.location }}</p>
+                                <span class="method-link availability">
+                                    Available for Remote Work <i class="fas fa-check-circle"></i>
+                                </span>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <!-- Default contact info -->
+                        <div class="contact-method" data-aos="fade-up" data-aos-delay="100">
+                            <div class="method-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="method-details">
+                                <h3 class="method-title">Email</h3>
+                                <p class="method-text">hello@portfolio.com</p>
+                                <a href="mailto:hello@portfolio.com" class="method-link">
+                                    Send Email <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Social Links -->
+                <div class="social-section" data-aos="fade-up" data-aos-delay="400">
+                    <h3 class="social-title">Follow Me</h3>
+                    <div class="social-links">
+                        {% if profile %}
+                            {% if profile.linkedin_url %}
+                            <a href="{{ profile.linkedin_url }}" target="_blank" class="social-link linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                                <span class="social-tooltip">LinkedIn</span>
+                            </a>
+                            {% endif %}
+                            {% if profile.github_url %}
+                            <a href="{{ profile.github_url }}" target="_blank" class="social-link github">
+                                <i class="fab fa-github"></i>
+                                <span class="social-tooltip">GitHub</span>
+                            </a>
+                            {% endif %}
+                            {% if profile.twitter_url %}
+                            <a href="{{ profile.twitter_url }}" target="_blank" class="social-link twitter">
+                                <i class="fab fa-twitter"></i>
+                                <span class="social-tooltip">Twitter</span>
+                            </a>
+                            {% endif %}
+                            {% if profile.website_url %}
+                            <a href="{{ profile.website_url }}" target="_blank" class="social-link website">
+                                <i class="fas fa-globe"></i>
+                                <span class="social-tooltip">Website</span>
+                            </a>
+                            {% endif %}
+                        {% else %}
+                            <a href="#" class="social-link linkedin"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link github"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Resume -->
+                {% if profile.resume %}
+                <div class="resume-section" data-aos="fade-up" data-aos-delay="500">
+                    <a href="{{ profile.resume.url }}" class="resume-btn" download>
+                        <i class="fas fa-download"></i><span>Download Resume</span>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="contact-form-container" data-aos="fade-left">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h2 class="form-title">Send me a message</h2>
+                        <p class="form-description">Let's discuss your project ideas</p>
+                    </div>
+                    
+                    <form class="contact-form" id="contactForm" method="post" action="{% url 'portfolio:contact' %}">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" name="name" class="form-input" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-input" placeholder="john@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-input" placeholder="Project Discussion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea id="message" name="message" class="form-textarea" rows="6" placeholder="Tell me about your project..." required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="submit-btn">
+                                <span class="btn-text">Send Message</span>
+                                <i class="fas fa-paper-plane btn-icon"></i>
+                                <div class="btn-ripple"></div>
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Success/Error -->
+                    <div class="form-message" id="formMessage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Contact CTA -->
+<section class="quick-contact section">
+    <div class="container">
+        <div class="cta-content" data-aos="fade-up">
+            <div class="cta-icon"><i class="fas fa-rocket"></i></div>
+            <h2 class="cta-title">Ready to start your project?</h2>
+            <p class="cta-description">
+                Let's turn your ideas into reality. I'm here to help bring your vision to life.
+            </p>
+            <div class="cta-buttons">
+                <a href="{% url 'portfolio:projects' %}" class="btn btn-outline">
+                    <i class="fas fa-eye"></i> View Portfolio
+                </a>
+                <a href="{% url 'portfolio:about' %}" class="btn btn-primary">
+                    <i class="fas fa-user"></i> Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+    
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formMessage.style.display = 'none';
+            
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                const result = await response.json();
+                
+                formMessage.style.display = 'block';
+                if (result.success) {
+                    formMessage.textContent = "Message sent successfully!";
+                    formMessage.className = "form-message success";
+                    form.reset();
+                } else {
+                    formMessage.textContent = result.error || "Something went wrong. Try again.";
+                    formMessage.className = "form-message error";
+                }
+            } catch (error) {
+                formMessage.style.display = 'block';
+                formMessage.textContent = "Error sending message.";
+                formMessage.className = "form-message error";
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
+

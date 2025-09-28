@@ -1,0 +1,686 @@
+<!-- templates/portfolio/about.html -->
+{% extends 'portfolio/base.html' %}
+
+{% block title %}About - {{ profile.name }}{% endblock %}
+
+{% block content %}
+<!-- About Hero -->
+<section class="about-hero section">
+    <div class="container">
+        <div class="about-content" data-aos="fade-up">
+            {% if profile %}
+            <div class="about-text">
+                <h1 class="about-title">About <span class="gradient-text">Me</span></h1>
+                <h2 class="about-subtitle">{{ profile.tagline }}</h2>
+                <div class="about-description">
+                    <p>{{ profile.bio }}</p>
+                </div>
+                
+                <div class="about-stats">
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-number">{{ experiences|length }}+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-number">{{ skills|length }}+</div>
+                        <div class="stat-label">Technologies</div>
+                    </div>
+                </div>
+                
+                <div class="about-actions">
+                    {% if profile.resume %}
+                    <a href="{{ profile.resume.url }}" class="btn btn-primary" download>
+                        <i class="fas fa-download"></i> Download Resume
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'portfolio:contact' %}" class="btn btn-secondary">
+                        <i class="fas fa-envelope"></i> Get In Touch
+                    </a>
+                </div>
+            </div>
+            
+            {% if profile.profile_image %}
+            <div class="about-image" data-aos="fade-left" data-aos-delay="200">
+                <div class="image-container">
+                    <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}">
+                    <div class="image-decoration"></div>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+{% if skills %}
+<section class="skills-section section">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Skills & Expertise</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Technologies and tools I'm passionate about
+        </p>
+        
+        <div class="skills-categories">
+            {% regroup skills by category as skill_groups %}
+            {% for category in skill_groups %}
+            <div class="skill-category" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:200 }}">
+                <h3 class="category-title">{{ category.grouper }}</h3>
+                <div class="skills-grid">
+                    {% for skill in category.list %}
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <div class="skill-icon">
+                                {% if skill.icon %}
+                                <i class="{{ skill.icon }}"></i>
+                                {% else %}
+                                <i class="fas fa-code"></i>
+                                {% endif %}
+                            </div>
+                            <div class="skill-info">
+                                <h4 class="skill-name">{{ skill.name }}</h4>
+                                <span class="skill-percentage">{{ skill.level }}%</span>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-progress="{{ skill.level }}"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Experience Section -->
+{% if experiences %}
+<section class="experience-section section">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Work Experience</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            My professional journey and career highlights
+        </p>
+        
+        <div class="timeline">
+            {% for experience in experiences %}
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="timeline-marker">
+                    <div class="timeline-dot {% if experience.current %}current{% endif %}"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-card card">
+                        <div class="timeline-header">
+                            <h3 class="position-title">{{ experience.position }}</h3>
+                            <div class="company-info">
+                                <h4 class="company-name">{{ experience.company }}</h4>
+                                <span class="timeline-date">
+                                    {{ experience.start_date|date:"M Y" }} - 
+                                    {% if experience.current %}
+                                        Present
+                                    {% else %}
+                                        {{ experience.end_date|date:"M Y" }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                            {% if experience.current %}
+                            <span class="current-badge">Current</span>
+                            {% endif %}
+                        </div>
+                        <div class="timeline-description">
+                            <p>{{ experience.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Personal Section -->
+<section class="personal-section section">
+    <div class="container">
+        <div class="personal-content" data-aos="fade-up">
+            <h2 class="section-title">Beyond the Code</h2>
+            <p class="section-subtitle">When I'm not coding, you'll find me...</p>
+            
+            <div class="interests-grid">
+                <div class="interest-item" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="interest-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 class="interest-title">Photography</h3>
+                    <p class="interest-description">Capturing moments and exploring creative perspectives through the lens.</p>
+                </div>
+                
+                <div class="interest-item" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="interest-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3 class="interest-title">Hiking</h3>
+                    <p class="interest-description">Exploring nature trails and finding inspiration in the great outdoors.</p>
+                </div>
+                
+                <div class="interest-item" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="interest-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="interest-title">Learning</h3>
+                    <p class="interest-description">Always curious about new technologies and design trends.</p>
+                </div>
+                
+                <div class="interest-item" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="interest-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3 class="interest-title">Music</h3>
+                    <p class="interest-description">Playing guitar and discovering new artists across various genres.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* About Hero */
+.about-hero {
+    padding: 2rem 0 4rem;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-title {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.about-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+}
+
+.about-description {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.about-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.about-image {
+    display: flex;
+    justify-content: center;
+}
+
+.image-container {
+    position: relative;
+    width: 350px;
+    height: 350px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(99, 102, 241, 0.3);
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-container:hover img {
+    transform: scale(1.05);
+}
+
+.image-decoration {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: var(--gradient);
+    border-radius: 50%;
+    opacity: 0.8;
+    filter: blur(20px);
+    z-index: -1;
+}
+
+/* Skills Section */
+.skills-categories {
+    display: grid;
+    gap: 3rem;
+}
+
+.skill-category {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.skill-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.skill-item:hover {
+    background: rgba(99, 102, 241, 0.1);
+    transform: translateY(-2px);
+}
+
+.skill-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.skill-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient);
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.skill-info {
+    flex: 1;
+}
+
+.skill-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.skill-percentage {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.skill-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.skill-progress {
+    height: 100%;
+    background: var(--gradient);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 2s ease-in-out;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--gradient);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 80px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.timeline-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.timeline-dot.current {
+    background: var(--primary-color);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.timeline-card {
+    transition: all 0.3s ease;
+}
+
+.timeline-card:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow-hover);
+}
+
+.timeline-header {
+    margin-bottom: 1rem;
+}
+
+.position-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.company-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.company-name {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.timeline-date {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.current-badge {
+    background: var(--gradient);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.timeline-description {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* Personal Section */
+.personal-section {
+    background: linear-gradient(135deg, var(--card-bg), var(--bg-light));
+    border-radius: 20px;
+    margin: 0 2rem;
+}
+
+.interests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.interest-item {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.interest-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+}
+
+.interest-item:hover::before {
+    transform: translateX(100%);
+}
+
+.interest-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.interest-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.interest-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.interest-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .about-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .about-title {
+        font-size: 2.5rem;
+    }
+    
+    .about-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .timeline::before {
+        left: 15px;
+    }
+    
+    .timeline-item {
+        padding-left: 50px;
+    }
+    
+    .timeline-marker {
+        left: 5px;
+    }
+    
+    .company-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-stats {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .about-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .interests-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .image-container {
+        width: 280px;
+        height: 280px;
+    }
+}
+</style>
+
+{% block scripts %}
+<script>
+// Animate skill bars when they come into view
+const observerOptions = {
+    threshold: 0.3,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const progress = entry.target.querySelector('.skill-progress');
+            const targetWidth = progress.dataset.progress + '%';
+            progress.style.width = targetWidth;
+        }
+    });
+}, observerOptions);
+
+// Observe all skill items
+document.querySelectorAll('.skill-item').forEach(item => {
+    skillObserver.observe(item);
+});
+
+// Counter animation for stats
+const countUpObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = parseInt(counter.textContent.replace(/\D/g, ''));
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    counter.textContent = target + '+';
+                    clearInterval(timer);
+                } else {
+                    counter.textContent = Math.ceil(current) + '+';
+                }
+            }, 20);
+        }
+    });
+}, { threshold: 0.5 });
+
+// Observe stat numbers
+document.querySelectorAll('.stat-number').forEach(stat => {
+    countUpObserver.observe(stat);
+});
+</script>
+{% endblock %}
+{% endblock %}
